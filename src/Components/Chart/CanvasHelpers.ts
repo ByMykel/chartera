@@ -46,7 +46,7 @@ const drawPriceTimeLine = (ctx: any, mL: number) => {
   ctx.setLineDash([5]);
   ctx.moveTo(mL, 0);
   ctx.lineTo(mL, ctx.canvas.height);
-  ctx.strokeStyle = 'white';
+  ctx.strokeStyle = '#535353';
   ctx.stroke();
 };
 
@@ -75,7 +75,7 @@ export const drawLine = (
 const drawPriceFonts = (priceList: Array<number>, ctx: any, heightPoints: number): void => {
   priceList.forEach((i: number, index: number) => {
     ctx.font = '11px Arial';
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = '#535353';
     const price: string = Math.trunc(i).toString();
     let rightMargin: number;
 
@@ -104,7 +104,7 @@ const drawPriceFonts = (priceList: Array<number>, ctx: any, heightPoints: number
 /* Draws the horizontal price lines */
 
 export const drawPriceLine = (ctx: any, highestVal: number, lowestVal: number, numberOfLines: number): void => {
-  const heightPoints: number = ctx.canvas.height / (numberOfLines + 1);
+  const heightPoints: number = (ctx.canvas.height / (numberOfLines + 1));
   const priceList: Array<number> = [];
   // Draws the lines
   for (let i: number = 0; i <= numberOfLines + 1; i++) {
@@ -114,7 +114,7 @@ export const drawPriceLine = (ctx: any, highestVal: number, lowestVal: number, n
     ctx.beginPath();
     ctx.moveTo(0, (heightPoints * i));
     ctx.lineTo(ctx.canvas.width, (heightPoints * i));
-    ctx.strokeStyle = 'yellow';
+    ctx.strokeStyle = '#212121';
     ctx.stroke();
   }
 
@@ -126,7 +126,7 @@ export const drawPriceLine = (ctx: any, highestVal: number, lowestVal: number, n
 export const drawTimeFonts = (timeList: Array<number>, ctx: any, widthPoints: number, skippedDays: number): void => {
   timeList.forEach((i: number, index: number) => {
     ctx.font = '11px Arial';
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = '#535353';
     const time: number = i;
 
     if (index !== timeList.length - 1) {
@@ -150,7 +150,7 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
     ctx.beginPath();
     ctx.moveTo((widthPoints * i), 0);
     ctx.lineTo((widthPoints * i), ctx.canvas.height);
-    ctx.strokeStyle = 'yellow';
+    ctx.strokeStyle = '#212121';
     ctx.stroke();
   }
 
@@ -163,9 +163,9 @@ Gets the candle color
 */
 export const getColor = (open: number, close: number, opacity?: number): string => {
   if (open - close > 0) {
-    return opacity ? `rgb(255,0,0,${opacity.toString()})` : 'rgb(255,0,0)';
+    return opacity ? `rgba(249,70,93,${opacity.toString()})` : 'rgb(249,70,93)';
   }
-  return opacity ? `rgb(0,255,0,${opacity.toString()})` : 'rgb(0,255,0)';
+  return opacity ? `rgba(14,203,129,${opacity.toString()})` : 'rgb(14,203,129)';
 };
 
 /* Draw volume candle */

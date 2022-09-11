@@ -10,7 +10,7 @@ interface IProps {
   bgColor?: string
 }
 
-const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = 'black' }: IProps) {
+const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IProps) {
   const [data] = useState<Array<DataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
 
