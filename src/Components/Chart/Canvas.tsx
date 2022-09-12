@@ -13,22 +13,46 @@ interface IProps {
 const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IProps) {
   const [data] = useState<Array<DataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
+  const [canvasWidth, setCanvasWidth] = useState<number>(window.innerWidth);
+  const [scale, setScale] = useState<number>(0);
 
   const canvasRef = useRef(null);
 
+  const zoom = (event: any) => {
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      if (scale === 0) {
+        canvas.style.cursor = 'auto';
+      } else {
+        canvas.style.cursor = 'grab';
+      }
+    }
+
+    setScale(Math.max(0, Math.min(scale + event.deltaY * -0.01, 10)));
+    const width = window.innerWidth + 2000 * scale;
+    setCanvasWidth(width);
+  };
+
+  useEffect(() => {
+    window.addEventListener('wheel', zoom);
+    return () => {
+      window.removeEventListener('wheel', zoom);
+    };
+  });
+
   useEffect(() => {
     const canvas: HTMLCanvasElement = canvasRef.current!;
-    canvas.width = window.innerWidth;
+    canvas.width = canvasWidth ?? window.innerWidth;
     canvas.height = window.innerHeight;
     if (data && data.length !== 0) {
       setCandleWidth(canvas.width / data.length);
     }
-  }, [data, canvasRef]);
+  }, [data, canvasRef, canvasWidth]);
 
   useEffect(() => {
     const canvas: HTMLCanvasElement = canvasRef.current!;
     const context: CanvasRenderingContext2D = canvas.getContext('2d')!;
-    canvas.width = window.innerWidth;
+    canvas.width = canvasWidth ?? window.innerWidth;
     canvas.height = window.innerHeight;
 
     const {
@@ -93,7 +117,7 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IP
         if (maxVolume) drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height);
       }
     });
-  }, [candleWidth, data, bgColor]);
+  }, [candleWidth, data, bgColor, canvasWidth]);
 
   return <canvas ref={canvasRef} />;
 };

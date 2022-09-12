@@ -1,9 +1,34 @@
-* { margin:0; padding:0; } /* to remove the top and left whitespace */
+* {
+  margin: 0;
+  padding: 0;
+}
 
-html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+html {
+  overflow-y: hidden;
+}
 
-canvas { 
-  height: 100vh; 
-  width: 100vw; 
-  display: block;
+canvas {
+  height: 100vh;
+  width: auto;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background: #535353;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #535353;
 }
