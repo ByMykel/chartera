@@ -13,7 +13,7 @@ bodY {
   .wave {
     width: 5px;
     height: 100px;
-    background: linear-gradient(45deg, rgb(4, 148, 47), rgb(134, 3, 3));
+    background: linear-gradient(45deg, #0ecb81, #932e3b);
     margin: 10px;
     animation: wave 1s linear infinite;
     border-radius: 20px;
