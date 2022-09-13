@@ -15,6 +15,7 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IP
   const [candleWidth, setCandleWidth] = useState<number>();
   const [canvasWidth, setCanvasWidth] = useState<number>(window.innerWidth);
   const [scale, setScale] = useState<number>(0);
+  const [pos, setPos] = useState<any>({ left: 0, x: 0 });
 
   const canvasRef = useRef(null);
 
@@ -27,9 +28,9 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IP
         canvas.style.cursor = 'grab';
       }
     }
-
-    setScale(Math.max(0, Math.min(scale + event.deltaY * -0.01, 10)));
-    const width = window.innerWidth + 2000 * scale;
+    const newScale = Math.max(0, Math.min(scale + event.deltaY / 100 * -1, 10));
+    setScale(newScale);
+    const width = window.innerWidth + 2000 * newScale;
     setCanvasWidth(width);
   };
 
@@ -37,6 +38,63 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = '#121212' }: IP
     window.addEventListener('wheel', zoom);
     return () => {
       window.removeEventListener('wheel', zoom);
+    };
+  });
+
+  const mouseMoveHandler = async (e: any) => {
+    const canvas = document.querySelector<HTMLElement>('#root');
+    if (canvas) {
+      // How far the mouse has been moved
+      const dx = e.clientX - pos.x;
+
+      // Scroll the element
+      canvas.scrollLeft = pos.left - dx;
+    }
+  };
+
+  const mouseUpHandler = (e: any) => {
+    const canvas = document.querySelector<HTMLElement>('#root');
+    if (canvas) {
+      canvas.style.removeProperty('user-select');
+
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    }
+  };
+
+  const mouseDownHandler = async (e: any) => {
+    const canvas = document.querySelector<HTMLElement>('#root');
+
+    if (canvas) {
+      canvas.style.userSelect = 'none';
+
+      const newPos = {
+        left: canvas.scrollLeft,
+        x: e.clientX
+      };
+
+      setPos({ ...newPos });
+
+      // document.addEventListener('mousemove', mouseMoveHandler);
+      // document.addEventListener('mouseup', mouseUpHandler);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  }, [pos]);
+
+  useEffect(() => {
+    const canvas = document.querySelector('#root');
+
+    if (canvas) {
+      canvas.addEventListener('mousedown', mouseDownHandler);
+    }
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('mousedown', mouseDownHandler);
+      }
     };
   });
 

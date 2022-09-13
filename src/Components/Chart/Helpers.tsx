@@ -36,8 +36,8 @@ export const getDate = (stamp: number) : string => {
 
 export const getChartRefPoints = (data : DataObj[]) => {
   const obj : ChartRefPoints = {};
-  obj.highestVal = Math.max(...data.map((o: DataObj) => o.high));
-  obj.lowestVal = Math.min(...data.map((o: DataObj) => o.low));
+  obj.highestVal = Math.max(...data.map((o: DataObj) => o.high)) + 5000;
+  obj.lowestVal = Math.min(...data.map((o: DataObj) => o.low)) - 5000;
   obj.maxTime = Math.max(...data.map((o: DataObj) => o.openTime));
   obj.minTime = Math.min(...data.map((o: DataObj) => o.openTime));
   obj.maxVolume = Math.max(...data.map((o: DataObj) => o.volume));
